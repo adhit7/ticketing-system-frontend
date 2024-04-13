@@ -23,6 +23,26 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getBatches: builder.mutation({
+      query: () => ({
+        url: `${ADMIN_URL}/batch/all`,
+        method: 'GET',
+      }),
+    }),
+    createMentor: builder.mutation({
+      query: (data) => ({
+        url: `${ADMIN_URL}/mentor/create`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    createLearner: builder.mutation({
+      query: (data) => ({
+        url: `${ADMIN_URL}/learner/create`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -30,4 +50,7 @@ export const {
   useAdminLoginMutation,
   useAdminLogoutMutation,
   useCreateBatchMutation,
+  useCreateMentorMutation,
+  useGetBatchesMutation,
+  useCreateLearnerMutation,
 } = adminApiSlice;

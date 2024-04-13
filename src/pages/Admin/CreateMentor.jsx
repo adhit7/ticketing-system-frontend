@@ -1,32 +1,59 @@
-import React, { useState } from 'react';
-import Button from '../components/Button';
+import React, { useEffect, useState } from 'react';
+import Button from '../../components/Button';
 import { ErrorMessage, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { useCreateBatchMutation } from '../slices/adminApiSlice';
+import {
+  useCreateBatchMutation,
+  useCreateMentorMutation,
+  useGetBatchesMutation,
+} from '../../slices/adminApiSlice';
 import { toast } from 'react-toastify';
-import AdminInput from '../components/AdminInput';
-import CheckBox from '../components/CheckBox';
+import AdminInput from '../../components/AdminInput';
+import OptionBox from '../../components/OptionBox';
 
 const CreateMentor = () => {
-  const [availableBatch, setAvailableBatch] = useState([
-    'First',
-    'Second',
-    'Third',
-  ]);
+  const [availableBatch, setAvailableBatch] = useState([]);
+
+  const [createMentor, { isLoading }] = useCreateMentorMutation();
+
+  const [getBatches] = useGetBatchesMutation();
 
   const handleMentor = async (formValues, resetForm) => {
-    console.log('q', formValues);
-    // const { courseName } = formValues;
-
-    // try {
-    //   const res = await createBatch({ courseName, role: 'admin' }).unwrap();
-
-    //   toast.success(res?.message, { position: 'top-right' });
-    //   resetForm();
-    // } catch (err) {
-    //   toast.error(err?.data?.message || err.error, { position: 'top-right' });
-    // }
+    const { firstName, lastName, email, batch } = formValues;
+    try {
+      const res = await createMentor({
+        firstName,
+        lastName,
+        email,
+        batches: batch,
+        role: 'admin',
+      }).unwrap();
+      toast.success(res?.message, { position: 'top-right' });
+      resetForm();
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+    }
   };
+
+  const handleBatch = async () => {
+    try {
+      const res = await getBatches({ role: 'admin' }).unwrap();
+      if (res?.batches) {
+        const filterCourseNames = res?.batches
+          ?.filter((item) => !item?.mentor && item)
+          ?.map((item) => item?.courseName);
+        setAvailableBatch(filterCourseNames);
+      }
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+    }
+  };
+
+  useEffect(() => {
+    if (availableBatch?.length === 0) {
+      handleBatch();
+    }
+  }, []);
 
   return (
     <div className='bg-gray-50 flex justify-center'>
@@ -55,17 +82,18 @@ const CreateMentor = () => {
             setSubmitting(false);
           }}
         >
-          <Form>
+          <Form className='grid'>
             <AdminInput label='First Name' type='text' name='firstName' />
             <AdminInput label='Last Name' type='text' name='lastName' />
             <AdminInput label='Email' type='email' name='email' />
 
             {availableBatch?.length > 0 && (
-              <CheckBox
+              <OptionBox
                 label='Batch'
                 type='checkbox'
                 name='batch'
                 listOfItems={availableBatch}
+                info='Displays only batches with no mentor'
               />
             )}
 
@@ -73,7 +101,7 @@ const CreateMentor = () => {
               <Button
                 type='submit'
                 label='Create'
-                // loading={isLoading}
+                loading={isLoading}
                 message='Creating'
                 classes={'md:w-1/6 my-3'}
               />

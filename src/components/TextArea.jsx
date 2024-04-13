@@ -1,12 +1,12 @@
 import React from 'react';
-import { ErrorMessage, useField } from 'formik';
+import { ErrorMessage, Field, useField } from 'formik';
 
 const inputClass =
   'appearance-none block w-full py-2 px-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
 
-const Input = (props) => {
+const TextArea = (props) => {
   const [field, meta] = useField(props);
-  const { name, label, type, classes = '' } = props;
+  const { name, label, classes = '' } = props;
   const errorClass = meta.touched && meta.error ? 'error' : '';
 
   return (
@@ -15,13 +15,13 @@ const Input = (props) => {
         {label}
       </label>
       <div className='mt-1'>
-        <input
+        <Field
+          as='textarea'
           className={`
             ${inputClass}
             ${errorClass ? 'border border-red-500' : ''}
             ${classes}
           `}
-          type={type}
           {...field}
         />
       </div>
@@ -34,4 +34,4 @@ const Input = (props) => {
   );
 };
 
-export default Input;
+export default TextArea;

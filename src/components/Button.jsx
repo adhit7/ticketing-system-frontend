@@ -12,7 +12,7 @@ const Button = ({
   loading,
   message,
   onClick,
-  classes,
+  classes = '',
   disabled,
 }) => {
   return (

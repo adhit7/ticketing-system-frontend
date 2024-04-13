@@ -1,17 +1,48 @@
 import React from 'react';
 import ZenLogo from '../assets/zen_logo.png';
 import { NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAdminLogoutMutation } from '../slices/adminApiSlice';
+import { removeCredentials } from '../slices/authSlice';
 
 const Navbar = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const roleRoutes = {
+    admin: [
+      { name: 'Create Batch', route: '/admin/batch/create' },
+      { name: 'Create Mentor', route: '/admin/mentor/create' },
+      { name: 'Create Learner', route: '/admin/learner/create' },
+    ],
+    mentor: [],
+    learner: [{ name: 'Create Query', route: '/learner/query/create' }],
+  };
+
+  const [adminLogout] = useAdminLogoutMutation();
+  const dispatch = useDispatch();
+
+  const logoutHandler = async () => {
+    try {
+      await adminLogout();
+      dispatch(removeCredentials());
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+    }
+  };
+
   return (
     <nav className='border-gray-200 bg-gray-50 dark:bg-indigo-400 dark:border-gray-700'>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
-        <a href='#' className='flex items-center space-x-3 rtl:space-x-reverse'>
+        <NavLink
+          to={`${userInfo?.role}/home`}
+          className='flex items-center space-x-3 rtl:space-x-reverse'
+        >
           <img src={ZenLogo} className='h-10' alt='Zen Logo' />
           <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
             Zen class
           </span>
-        </a>
+        </NavLink>
         <button
           data-collapse-toggle='navbar-solid-bg'
           type='button'
@@ -38,26 +69,18 @@ const Navbar = () => {
         </button>
         <div className='hidden w-full md:block md:w-auto' id='navbar-solid-bg'>
           <ul className='flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700'>
-            <NavLink
-              to={'/admin/batch/create'}
-              className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
-            >
-              Create Batch
-            </NavLink>
-            <NavLink
-              to={'/admin/mentor/create'}
-              className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
-            >
-              Create Mentor
-            </NavLink>
-            <NavLink
-              to={'/admin/learner/create'}
-              className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
-            >
-              Create Learner
-            </NavLink>
+            {userInfo &&
+              roleRoutes?.[userInfo?.role]?.map((item) => (
+                <NavLink
+                  key={item.route}
+                  to={item.route}
+                  className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
+                >
+                  {item.name}
+                </NavLink>
+              ))}
             <button
-              onClick={() => console.log('logout')}
+              onClick={logoutHandler}
               className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
             >
               Logout

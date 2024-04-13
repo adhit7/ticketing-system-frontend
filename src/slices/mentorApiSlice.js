@@ -24,6 +24,13 @@ export const mentorApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    mentorTempPassword: builder.mutation({
+      query: (data) => ({
+        url: `${MENTOR_URL}/temp-password`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
     mentorLogout: builder.mutation({
       query: () => ({
         url: `${MENTOR_URL}/logout`,
@@ -37,5 +44,6 @@ export const {
   useMentorLoginMutation,
   useMentorForgotPasswordMutation,
   useMentorNewPasswordMutation,
+  useMentorTempPasswordMutation,
   useMentorLogoutMutation,
 } = mentorApiSlice;

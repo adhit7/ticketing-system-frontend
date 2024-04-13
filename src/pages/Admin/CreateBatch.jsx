@@ -1,10 +1,10 @@
 import React from 'react';
-import Button from '../components/Button';
+import Button from '../../components/Button';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { useCreateBatchMutation } from '../slices/adminApiSlice';
+import { useCreateBatchMutation } from '../../slices/adminApiSlice';
 import { toast } from 'react-toastify';
-import AdminInput from '../components/AdminInput';
+import AdminInput from '../../components/AdminInput';
 
 const CreateBatch = () => {
   const [createBatch, { isLoading }] = useCreateBatchMutation();

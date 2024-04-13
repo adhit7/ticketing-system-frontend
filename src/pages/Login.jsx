@@ -15,6 +15,7 @@ import { useLearnerLoginMutation } from '../slices/learnerApiSlice';
 import { useMentorLoginMutation } from '../slices/mentorApiSlice';
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const [role, setRole] = useState('');
   const [error, setError] = useState('');
   const { pathname } = useLocation();
@@ -27,23 +28,8 @@ const Login = () => {
 
   const [mentorLogin] = useMentorLoginMutation();
 
-  // const [activateUser] = useActivateUserMutation();
-
-  // const { activateUserStatus } = useSelector((state) => state.auth);
-
-  // const activationHandler = async () => {
-  //   try {
-  //     const res = await activateUser({ userId: activateUserStatus }).unwrap();
-  //     dispatch(setCredentials({ ...res }));
-  //   } catch (err) {
-  //     toast.error(
-  //       'While activating your account, something went wrong. Please login again',
-  //       { position: 'top-right' }
-  //     );
-  //   }
-  // };
-
   const handleLogin = async (formValues, resetForm) => {
+    setLoading(true);
     setError('');
     const { email, password } = formValues;
     try {
@@ -59,26 +45,32 @@ const Login = () => {
       resetForm();
     } catch (err) {
       setError(err?.data?.message || err.error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    // if (activateUserStatus !== '') {
-    //   activationHandler();
-    // }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    if (pathname === '/learner/login') {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (pathname.startsWith('/learner')) {
       setRole('learner');
-    } else if (pathname === '/mentor/login') {
+    } else if (pathname.startsWith('/mentor')) {
       setRole('mentor');
-    } else if (pathname === '/admin/login') {
+    } else if (pathname.startsWith('/admin')) {
       setRole('admin');
     }
   }, []);
 
   return (
     <div className='min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
-      <FormHeader>Login to your account</FormHeader>
+      <FormHeader>
+        {role !== 'admin'
+          ? role === 'mentor'
+            ? 'Mentor'
+            : 'Learner'
+          : 'Admin'}{' '}
+        Login
+      </FormHeader>
       {error && <ErrorBox message={error} />}
       <div className='sm:mx-auto sm:w-full sm:max-w-md rounded bg-white shadow shadow-md pt-8'>
         <div className='sm:mx-auto sm:w-full sm:max-w-md'>
@@ -103,35 +95,44 @@ const Login = () => {
                 <Input label='Email' type='email' name='email' />
                 <Input label='Password' type='password' name='password' />
 
-                <div className='mt-6 flex items-start justify-between'>
-                  <div className='flex items-center'>
-                    <input
-                      id='remember-me'
-                      name='remember-me'
-                      type='checkbox'
-                      className='h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
-                    />
-                    <label
-                      htmlFor='remember-me'
-                      className='ml-2 block text-sm text-gray-900'
-                    >
-                      Remember me
-                    </label>
+                {role !== 'admin' && (
+                  <div className='mt-6 flex items-start justify-between'>
+                    <div className='text-sm'>
+                      <Link
+                        to={
+                          role === 'mentor' ? '/learner/login' : '/mentor/login'
+                        }
+                        onClick={() =>
+                          role === 'mentor'
+                            ? setRole('learner')
+                            : setRole('mentor')
+                        }
+                        className='font-medium text-indigo-600 hover:text-indigo-500'
+                      >
+                        {role === 'mentor'
+                          ? 'Are you Learner?'
+                          : 'Are you Mentor?'}
+                      </Link>
+                    </div>
+                    <div className='text-sm'>
+                      <Link
+                        to={
+                          role === 'mentor'
+                            ? '/mentor/forgot-password'
+                            : '/learner/forgot-password'
+                        }
+                        className='font-medium text-indigo-600 hover:text-indigo-500'
+                      >
+                        Forgot your password
+                      </Link>
+                    </div>
                   </div>
-                  <div className='text-sm'>
-                    <Link
-                      to='/forgot-password'
-                      className='font-medium text-indigo-600 hover:text-indigo-500'
-                    >
-                      Forgot your password?
-                    </Link>
-                  </div>
-                </div>
+                )}
                 <div className='mt-7'>
                   <Button
                     type='submit'
                     label='Login'
-                    // loading={isLoading}
+                    loading={loading}
                     message='Logging in'
                   />
                 </div>

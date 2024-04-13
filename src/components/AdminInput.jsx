@@ -10,7 +10,7 @@ const AdminInput = (props) => {
   const errorClass = meta.touched && meta.error ? 'error' : '';
 
   return (
-    <div className='inline-flex justify-between items-center w-9/12 py-5 flex-wrap'>
+    <div className='flex justify-between items-center justify-self-center	flex-wrap py-5 w-9/12'>
       <label htmlFor={name} className='text-lg font-medium text-gray-700'>
         {label}
       </label>

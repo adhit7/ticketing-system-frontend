@@ -24,6 +24,13 @@ export const learnerApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    learnerTempPassword: builder.mutation({
+      query: (data) => ({
+        url: `${LEARNER_URL}/temp-password`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
     learnerLogout: builder.mutation({
       query: () => ({
         url: `${LEARNER_URL}/logout`,
@@ -38,4 +45,5 @@ export const {
   useLearnerForgotPasswordMutation,
   useLearnerNewPasswordMutation,
   useLearnerLogoutMutation,
+  useLearnerTempPasswordMutation,
 } = learnerApiSlice;
