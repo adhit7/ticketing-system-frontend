@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useGetAllQueriesMutation } from '../../slices/learnerApiSlice';
+import AllQueries from '../AllQueries';
 
 const LearnerHome = () => {
-  return <div>LearnerHome</div>;
+  const { userInfo } = useSelector((state) => state.auth);
+  const [queries, setQueries] = useState([]);
+  const [getAllQueries] = useGetAllQueriesMutation();
+
+  const handleAllQueries = async () => {
+    try {
+      const res = await getAllQueries({
+        email: userInfo?.email,
+        role: 'learner',
+      }).unwrap();
+      setQueries(res?.queries);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+    }
+  };
+
+  useEffect(() => {
+    handleAllQueries();
+  }, []);
+  return <div>{queries?.length > 0 && <AllQueries queries={queries} />}</div>;
 };
 
 export default LearnerHome;

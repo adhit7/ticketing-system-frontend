@@ -35,7 +35,7 @@ const Navbar = () => {
     <nav className='border-gray-200 bg-gray-50 dark:bg-indigo-400 dark:border-gray-700'>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
         <NavLink
-          to={`${userInfo?.role}/home`}
+          to='/'
           className='flex items-center space-x-3 rtl:space-x-reverse'
         >
           <img src={ZenLogo} className='h-10' alt='Zen Logo' />
