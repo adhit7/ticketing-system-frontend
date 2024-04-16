@@ -37,6 +37,38 @@ export const mentorApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
       }),
     }),
+    mentorQueries: builder.mutation({
+      query: ({ email, role }) => ({
+        url: `${MENTOR_URL}/query/all/${email}/${role}`,
+        method: 'GET',
+      }),
+    }),
+    mentorQuery: builder.mutation({
+      query: ({ email, queryId, role }) => ({
+        url: `${MENTOR_URL}/query/${email}/${queryId}/${role}`,
+        method: 'GET',
+      }),
+    }),
+    startConversation: builder.mutation({
+      query: (data) => ({
+        url: `${MENTOR_URL}/start-conversation`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    sendMessage: builder.mutation({
+      query: (data) => ({
+        url: `${MENTOR_URL}/send-message`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    mentorConversation: builder.mutation({
+      query: ({ conversationId, role }) => ({
+        url: `${MENTOR_URL}/${conversationId}/messages/${role}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -46,4 +78,9 @@ export const {
   useMentorNewPasswordMutation,
   useMentorTempPasswordMutation,
   useMentorLogoutMutation,
+  useMentorQueriesMutation,
+  useMentorQueryMutation,
+  useStartConversationMutation,
+  useSendMessageMutation,
+  useMentorConversationMutation,
 } = mentorApiSlice;

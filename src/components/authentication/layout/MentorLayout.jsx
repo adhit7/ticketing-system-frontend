@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import MentorHome from '../../../pages/Mentor/MentorHome';
 import Navbar from '../../Navbar';
+import QueryFullDetails from '../../../pages/QueryFullDetails';
 
 const MentorLayout = () => {
   return (
@@ -9,6 +10,7 @@ const MentorLayout = () => {
       <Navbar />
       <Routes>
         <Route path='/' element={<MentorHome />} />
+        <Route path='/mentor/query/:id' element={<QueryFullDetails />} />
       </Routes>
     </>
   );

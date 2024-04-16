@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useGetAllQueriesMutation } from '../../slices/learnerApiSlice';
 import AllQueries from '../AllQueries';
+import { toast } from 'react-toastify';
 
 const LearnerHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -23,7 +24,13 @@ const LearnerHome = () => {
   useEffect(() => {
     handleAllQueries();
   }, []);
-  return <div>{queries?.length > 0 && <AllQueries queries={queries} />}</div>;
+  return (
+    <div>
+      {queries?.length > 0 && (
+        <AllQueries queries={queries} role={userInfo?.role} />
+      )}
+    </div>
+  );
 };
 
 export default LearnerHome;

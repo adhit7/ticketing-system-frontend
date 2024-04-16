@@ -5,6 +5,7 @@ import CreateBatch from '../../../pages/Admin/CreateBatch';
 import CreateMentor from '../../../pages/Admin/CreateMentor';
 import CreateLearner from '../../../pages/Admin/CreateLearner';
 import Navbar from '../../Navbar';
+import QueryFullDetails from '../../../pages/Admin/QueryFullDetails';
 
 const AdminLayout = () => {
   return (
@@ -15,6 +16,7 @@ const AdminLayout = () => {
         <Route path='/admin/batch/create' element={<CreateBatch />} />
         <Route path='/admin/mentor/create' element={<CreateMentor />} />
         <Route path='/admin/learner/create' element={<CreateLearner />} />
+        <Route path='/admin/query/:id' element={<QueryFullDetails />} />
       </Routes>
     </>
   );
