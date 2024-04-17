@@ -43,12 +43,6 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getAllQueries: builder.mutation({
-      query: ({ role }) => ({
-        url: `${ADMIN_URL}/query/all/${role}`,
-        method: 'GET',
-      }),
-    }),
     assignQuery: builder.mutation({
       query: (data) => ({
         url: `${ADMIN_URL}/query/assign`,
@@ -66,6 +60,5 @@ export const {
   useCreateMentorMutation,
   useGetBatchesMutation,
   useCreateLearnerMutation,
-  useGetAllQueriesMutation,
   useAssignQueryMutation,
 } = adminApiSlice;

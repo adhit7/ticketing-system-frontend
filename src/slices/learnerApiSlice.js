@@ -38,12 +38,6 @@ export const learnerApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getAllQueries: builder.mutation({
-      query: ({ email, role }) => ({
-        url: `${LEARNER_URL}/query/all/${email}/${role}`,
-        method: 'GET',
-      }),
-    }),
     learnerLogout: builder.mutation({
       query: () => ({
         url: `${LEARNER_URL}/logout`,
@@ -60,5 +54,4 @@ export const {
   useLearnerLogoutMutation,
   useLearnerTempPasswordMutation,
   useCreateQueryMutation,
-  useGetAllQueriesMutation,
 } = learnerApiSlice;

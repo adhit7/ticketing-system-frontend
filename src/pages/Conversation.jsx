@@ -2,19 +2,13 @@ import React, { useRef, useState } from 'react';
 import Chat from './Chat';
 import { FaCircle, FaUserCircle } from 'react-icons/fa';
 
-const Conversation = ({ messages, action }) => {
+const Conversation = ({ userInfo, messages, action, chatWindowRef }) => {
   const [newMessage, setNewMessage] = useState('');
   // const messages = [
   //   { sender: 'user', content: 'This is a message from the user.' },
   //   { sender: 'assistant', content: 'This is a response from the assistant.' },
   // ];
-  const chatWindowRef = useRef(null);
 
-  const scrollToBottom = () => {
-    if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-    }
-  };
   return (
     <div className='flex flex-col border-r-2 border-gray-400'>
       <div
@@ -27,12 +21,14 @@ const Conversation = ({ messages, action }) => {
               <div
                 key={index}
                 className={`flex-col ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
+                  message?.sender === userInfo?._id
+                    ? 'justify-end'
+                    : 'justify-start'
                 } mb-2`}
               >
                 <div
                   className={`flex items-end ${
-                    message.sender === 'user' ? 'flex-row-reverse' : ''
+                    message?.sender === userInfo?._id ? 'flex-row-reverse' : ''
                   }`}
                 >
                   <div className={`self-start	mx-2`}>
@@ -40,7 +36,7 @@ const Conversation = ({ messages, action }) => {
                   </div>
                   <div
                     className={`max-w-xs rounded-lg px-4 py-2 ${
-                      message.sender === 'user'
+                      message?.sender === userInfo?._id
                         ? 'bg-blue-500 text-white'
                         : 'bg-gray-200'
                     }`}
@@ -49,7 +45,7 @@ const Conversation = ({ messages, action }) => {
                   </div>
                   {/* <span
                   className={`text-xs text-gray-500 flex ${
-                    message.sender === 'user'
+                    message?.sender === userInfo?._id
                       ? 'justify-self-end'
                       : 'justify-self-start'
                   }`}
@@ -74,21 +70,24 @@ const Conversation = ({ messages, action }) => {
         )}
       </div>
 
-      <div className='flex items-end px-4 py-2 bg-gray-100 '>
-        <input
-          type='text'
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder='Type your message...'
-          className='flex-grow px-4 py-2 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500'
-        />
-        <button
-          onClick={() => action(newMessage, setNewMessage)}
-          className='ml-2 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600'
-        >
-          Send
-        </button>
-      </div>
+      {userInfo?.role !== 'admin' && (
+        <div className='flex items-end px-4 py-2 bg-gray-100 '>
+          <input
+            type='text'
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder='Type your message...'
+            className='flex-grow px-4 py-2 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500'
+          />
+          <button
+            onClick={() => action(newMessage, setNewMessage)}
+            className='ml-2 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600'
+            disabled={newMessage?.length === 0}
+          >
+            Send
+          </button>
+        </div>
+      )}
     </div>
   );
 };

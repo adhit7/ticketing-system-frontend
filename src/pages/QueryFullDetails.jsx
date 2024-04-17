@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Conversation from './Conversation';
 import QueryDetails from './QueryDetails';
-import {
-  useMentorConversationMutation,
-  useMentorQueryMutation,
-  useSendMessageMutation,
-  useStartConversationMutation,
-} from '../slices/mentorApiSlice';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import useQuery from '../utils/useQuery';
+import useConversation from '../utils/useConversation';
 
 const QueryFullDetails = () => {
   let { state } = useLocation();
@@ -19,37 +15,33 @@ const QueryFullDetails = () => {
 
   const [messages, setMessages] = useState([]);
 
-  const [refresh, setRefresh] = useState(0);
+  const { getQuery, getQueries } = useQuery();
 
-  const [mentorQuery] = useMentorQueryMutation();
+  const { getAllConversation, newConversation, sentMessage } =
+    useConversation();
 
-  const [startConversation] = useStartConversationMutation();
+  const chatWindowRef = useRef(null);
 
-  const [sendMessage] = useSendMessageMutation();
-
-  const [mentorConversation] = useMentorConversationMutation();
-
-  const handleQuery = async () => {
-    try {
-      const res = await mentorQuery({
-        email: userInfo?.email,
-        queryId: query._id.toString(),
-        role: 'mentor',
-      }).unwrap();
-      setQuery(res?.query);
-    } catch (err) {
-      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+  const scrollToBottom = () => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
+  };
+
+  const handleQuery = async (queryId) => {
+    const query = await getQuery(queryId);
+    if (query) {
+      setQuery(query);
+    }
+    await getQueries();
   };
 
   const handleConversation = async () => {
     try {
-      const res = await mentorConversation({
-        conversationId: query.conversationId?.toString(),
-        role: 'mentor',
-      }).unwrap();
-      console.log('w', res);
-      setMessages(res?.messages);
+      const conversationData = await getAllConversation(
+        query.conversationId?.toString()
+      );
+      setMessages(conversationData);
     } catch (error) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });
     }
@@ -59,36 +51,30 @@ const QueryFullDetails = () => {
     if (!query) {
       setQuery(state);
     }
-    handleQuery();
-  }, [refresh]);
+  }, [state]);
 
   useEffect(() => {
-    if (query?.conversationId && messages?.length === 0) {
+    if (query?.conversationId) {
       handleConversation();
     }
   }, [query]);
 
   const handleMessages = async (newMessage, setNewMessage) => {
     try {
-      let res;
-      if (!query.conversationId) {
-        res = await startConversation({
-          queryId: query?._id,
-          content: newMessage,
-          role: 'mentor',
-        }).unwrap();
+      if (!query.conversationId && userInfo?.role === 'mentor') {
+        await newConversation(query?._id, newMessage);
         setNewMessage('');
-        setRefresh(refresh + 1);
-        console.log('a', res);
+        scrollToBottom();
+
+        //Calling to update query data
+        handleQuery(query?._id);
       } else {
-        res = await sendMessage({
-          queryId: query?._id,
-          content: newMessage,
-          role: 'mentor',
-        }).unwrap();
+        await sentMessage(query?._id, newMessage);
         setNewMessage('');
-        setRefresh(refresh + 1);
-        console.log('2', res);
+        scrollToBottom();
+
+        //Calling to update message data
+        handleConversation();
       }
     } catch (err) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });
@@ -97,7 +83,12 @@ const QueryFullDetails = () => {
 
   return (
     <div className='grid md:grid-cols-2 gap-4 p-3 h-full'>
-      <Conversation messages={messages} action={handleMessages} />
+      <Conversation
+        userInfo={userInfo}
+        messages={messages}
+        action={handleMessages}
+        chatWindowRef={chatWindowRef}
+      />
 
       {query && <QueryDetails query={query} />}
     </div>
