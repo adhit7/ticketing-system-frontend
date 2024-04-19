@@ -1,91 +1,102 @@
-import React, { useRef, useState } from 'react';
-import Chat from './Chat';
-import { FaCircle, FaUserCircle } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaUserCircle } from 'react-icons/fa';
+import { formatDate } from '../utils/time';
 
-const Conversation = ({ userInfo, messages, action, chatWindowRef }) => {
+const Conversation = ({
+  userInfo,
+  messages,
+  action,
+  chatWindowRef,
+  status,
+  solution,
+}) => {
   const [newMessage, setNewMessage] = useState('');
-  // const messages = [
-  //   { sender: 'user', content: 'This is a message from the user.' },
-  //   { sender: 'assistant', content: 'This is a response from the assistant.' },
-  // ];
+  const sender =
+    userInfo?.role === 'admin' && messages?.length > 0
+      ? messages[0]?.sender
+      : userInfo?._id;
 
   return (
-    <div className='flex flex-col border-r-2 border-gray-400'>
-      <div
-        className=' flex relative h-4/6 overflow-y-auto p-5'
-        ref={chatWindowRef}
-      >
+    <div className='bg-gray-100 flex flex-col sm:border-r-2 sm:border-gray-400 h-screen md:order-first order-last'>
+      <div className='bg-white flex justify-end px-4 py-2'>
+        <div className='text-sm ml-2 px-3 py-3 rounded-md text-green-900 bg-green-300'>
+          {status === 'CLOSED' ? 'CLOSED' : 'OPEN'}
+        </div>
+      </div>
+      <div className='p-4 overflow-y-auto' ref={chatWindowRef}>
         {messages?.length > 0 ? (
           <div className='flex-grow flex-col'>
             {messages.map((message, index) => (
               <div
                 key={index}
                 className={`flex-col ${
-                  message?.sender === userInfo?._id
-                    ? 'justify-end'
-                    : 'justify-start'
+                  message?.sender === sender ? 'justify-end' : 'justify-start'
                 } mb-2`}
               >
                 <div
                   className={`flex items-end ${
-                    message?.sender === userInfo?._id ? 'flex-row-reverse' : ''
+                    message?.sender === sender ? 'flex-row-reverse' : ''
                   }`}
                 >
                   <div className={`self-start	mx-2`}>
                     <FaUserCircle size={25} className='text-purple-800' />
                   </div>
                   <div
-                    className={`max-w-xs rounded-lg px-4 py-2 ${
-                      message?.sender === userInfo?._id
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200'
+                    className={`max-w-md rounded-lg px-4 py-2 ${
+                      message?.sender === sender
+                        ? 'bg-white text-black'
+                        : 'border border-gray-300 bg-indigo-100'
                     }`}
                   >
-                    {message.content}
+                    {message?.content}
+                    <div className={`text-xs  text-black`}>
+                      {formatDate(message?.createdAt)}
+                    </div>
                   </div>
-                  {/* <span
-                  className={`text-xs text-gray-500 flex ${
-                    message?.sender === userInfo?._id
-                      ? 'justify-self-end'
-                      : 'justify-self-start'
-                  }`}
-                >
-                  2 mins ago
-                </span> */}
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className='flex flex-col flex-grow  justify-center items-center w-100'>
+          <div className='flex flex-col justify-center items-center h-screen'>
             <h2 className='mb-6 text-center text-lg	 font-bold text-gray-500'>
-              Query has been assigned and no messages yet! Send one now.
+              {status === 'ASSIGNED'
+                ? `Query has been assigned and no messages yet! Send one now.`
+                : status === 'UNASSIGNED' &&
+                  `Query will be soon assigned to your batch mentor.`}
             </h2>
             <img
               src={'https://www.zenclass.in/images/no_messages_student.svg'}
-              className='object-contain md:h-48 md:w-96 sm:h-30 sm:w-30'
+              className='object-contain md:h-48 md:w-96 sm:h-30 sm:w-30 items-center'
               alt='Zen Logo'
             />
           </div>
         )}
       </div>
 
-      {userInfo?.role !== 'admin' && (
-        <div className='flex items-end px-4 py-2 bg-gray-100 '>
+      {status === 'ASSIGNED' && userInfo?.role !== 'admin' && (
+        <div className='flex mt-auto px-4 py-2 bg-gray-100 '>
           <input
             type='text'
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder='Type your message...'
-            className='flex-grow px-4 py-2 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='flex-grow px-4 py-2 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400'
           />
           <button
             onClick={() => action(newMessage, setNewMessage)}
-            className='ml-2 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600'
+            className='ml-2 px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-500'
             disabled={newMessage?.length === 0}
           >
             Send
           </button>
+        </div>
+      )}
+
+      {status === 'CLOSED' && (
+        <div className='mt-auto px-4 py-2 bg-white w-100'>
+          <p className='text-md text-indigo-900 mb-1'>Solution</p>
+          <p className='text-lg text-black-500'>{solution}</p>
         </div>
       )}
     </div>
@@ -93,5 +104,3 @@ const Conversation = ({ userInfo, messages, action, chatWindowRef }) => {
 };
 
 export default Conversation;
-
-//                  <FaUserCircle className='text-purple-800 flex-shrink-0' />

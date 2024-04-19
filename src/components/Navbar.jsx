@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAdminLogoutMutation } from '../slices/adminApiSlice';
 import { removeCredentials } from '../slices/authSlice';
+import { removeQueries } from '../slices/dataSlice';
 
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -25,6 +26,7 @@ const Navbar = () => {
   const logoutHandler = async () => {
     try {
       await adminLogout();
+      dispatch(removeQueries());
       dispatch(removeCredentials());
     } catch (err) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });

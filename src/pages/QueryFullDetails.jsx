@@ -2,53 +2,30 @@ import React, { useEffect, useRef, useState } from 'react';
 import Conversation from './Conversation';
 import QueryDetails from './QueryDetails';
 import { useLocation } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import useQuery from '../utils/useQuery';
 import useConversation from '../utils/useConversation';
+import { io } from 'socket.io-client';
+import Modal from '../components/Modal';
+
+let socket;
 
 const QueryFullDetails = () => {
   let { state } = useLocation();
-  const [query, setQuery] = useState(null);
-
   const { userInfo } = useSelector((state) => state.auth);
 
+  const [query, setQuery] = useState(null);
   const [messages, setMessages] = useState([]);
-
-  const { getQuery, getQueries } = useQuery();
-
-  const { getAllConversation, newConversation, sentMessage } =
-    useConversation();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const chatWindowRef = useRef(null);
 
-  const scrollToBottom = () => {
-    if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-    }
-  };
-
-  const handleQuery = async (queryId) => {
-    const query = await getQuery(queryId);
-    if (query) {
-      setQuery(query);
-    }
-    await getQueries();
-  };
-
-  const handleConversation = async () => {
-    try {
-      const conversationData = await getAllConversation(
-        query.conversationId?.toString()
-      );
-      setMessages(conversationData);
-    } catch (error) {
-      toast.error(err?.data?.message || err.error, { position: 'top-right' });
-    }
-  };
+  const { solveQuery } = useQuery();
+  const { getAllConversation, sentMessage } = useConversation();
 
   useEffect(() => {
-    if (!query) {
+    if (query === null) {
       setQuery(state);
     }
   }, [state]);
@@ -59,38 +36,102 @@ const QueryFullDetails = () => {
     }
   }, [query]);
 
-  const handleMessages = async (newMessage, setNewMessage) => {
-    try {
-      if (!query.conversationId && userInfo?.role === 'mentor') {
-        await newConversation(query?._id, newMessage);
-        setNewMessage('');
-        scrollToBottom();
+  useEffect(() => {
+    socket = io('http://localhost:4000');
+    socket.emit('setup', userInfo);
 
-        //Calling to update query data
-        handleQuery(query?._id);
-      } else {
-        await sentMessage(query?._id, newMessage);
-        setNewMessage('');
-        scrollToBottom();
+    // eslint-disable-next-line
+  }, []);
 
-        //Calling to update message data
-        handleConversation();
-      }
-    } catch (err) {
-      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+  useEffect(() => {
+    socket.on('message received', (newMessageRecieved) => {
+      setMessages([...messages, newMessageRecieved]);
+    });
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      socket.off('message received');
+      socket.off('setup', userInfo);
+    };
+  });
+
+  const scrollToBottom = () => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
   };
 
-  return (
-    <div className='grid md:grid-cols-2 gap-4 p-3 h-full'>
-      <Conversation
-        userInfo={userInfo}
-        messages={messages}
-        action={handleMessages}
-        chatWindowRef={chatWindowRef}
-      />
+  const handleConversation = async () => {
+    const conversationData = await getAllConversation(
+      query.conversationId?.toString()
+    );
+    setMessages(conversationData?.messages);
+    if (!socketConnected) {
+      console.log('First');
+      socket.emit('join chat', conversationData?._id);
+      setSocketConnected(true);
+    }
+  };
 
-      {query && <QueryDetails query={query} />}
+  const handleMessages = async (newMessage, setNewMessage) => {
+    const data = await sentMessage(query?._id, newMessage);
+    const receiverId =
+      userInfo?.role === 'mentor' ? query?.raisedBy : query?.assignedTo;
+
+    if (!socketConnected) {
+      console.log('Second', data);
+      socket.emit('join chat', data?._id);
+      setSocketConnected(true);
+    }
+
+    socket.emit('new message', query?.conversationId, userInfo, {
+      ...data?.message,
+      receiverId: receiverId,
+    });
+    setMessages([...messages, data?.message]);
+    setNewMessage('');
+    scrollToBottom();
+  };
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleCloseQuery = async (solution) => {
+    const updatedQuery = await solveQuery(query?._id, solution);
+    setQuery(updatedQuery);
+  };
+
+  return (
+    <div className='grid md:grid-cols-2 gap-4 p-3 mb-5 bg-white'>
+      {query && (
+        <>
+          <Conversation
+            userInfo={userInfo}
+            messages={messages}
+            action={handleMessages}
+            chatWindowRef={chatWindowRef}
+            status={query?.status}
+            solution={query?.solution}
+          />
+          <QueryDetails
+            query={query}
+            setQuery={setQuery}
+            userInfo={userInfo}
+            handleOpenModal={handleOpenModal}
+          />
+          <Modal
+            isOpen={modalOpen}
+            onClose={handleCloseModal}
+            queryId={query?.id}
+            handleCloseQuery={handleCloseQuery}
+          />
+        </>
+      )}
     </div>
   );
 };

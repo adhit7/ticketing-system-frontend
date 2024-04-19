@@ -21,32 +21,34 @@ function useConversation() {
         conversationId: id?.toString(),
         role: userInfo?.role,
       }).unwrap();
-      return res?.messages;
-    } catch (error) {
+      return res;
+    } catch (err) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });
     }
   };
 
   const newConversation = async (id, message) => {
     try {
-      await startConversation({
+      const res = await startConversation({
         queryId: id,
         content: message,
         role: userInfo?.role,
       }).unwrap();
-    } catch (error) {
+      return res;
+    } catch (err) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });
     }
   };
 
   const sentMessage = async (id, message) => {
     try {
-      await sendMessage({
+      const res = await sendMessage({
         queryId: id,
         content: message,
         role: userInfo?.role,
       }).unwrap();
-    } catch (error) {
+      return res;
+    } catch (err) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });
     }
   };

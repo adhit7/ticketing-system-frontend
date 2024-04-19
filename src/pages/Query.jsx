@@ -11,7 +11,7 @@ function Query({ query, action }) {
   return (
     <div
       className='m-2 p-4 border rounded-xl min-w-fit cursor-pointer bg-white space-y-4'
-      onClick={() => action()}
+      onClick={() => action(query)}
     >
       <div className='flex items-center justify-between gap-10'>
         <h2 className='text-indigo-900 opacity-90 text-xl font-semibold'>

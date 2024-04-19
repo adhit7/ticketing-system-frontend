@@ -15,7 +15,18 @@ export const queryApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    closeQuery: builder.mutation({
+      query: (data) => ({
+        url: `${QUERY_URL}/query/close`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useAllQueriesMutation, useQueryMutation } = queryApiSlice;
+export const {
+  useAllQueriesMutation,
+  useQueryMutation,
+  useCloseQueryMutation,
+} = queryApiSlice;

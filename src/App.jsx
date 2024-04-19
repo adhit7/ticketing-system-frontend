@@ -13,10 +13,11 @@ import LearnerLayout from './components/authentication/layout/LearnerLayout';
 import Login from './pages/Login';
 import NewPassword from './pages/NewPassword';
 import ForgotPassword from './pages/ForgotPassword';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <div className='h-screen font-poppins bg-gray-50'>
+    <div className='h-screen font-poppins'>
       <Routes>
         <Route path='*' element={<RequireUser />}>
           <Route path='admin/*' element={<AdminLayout />} />

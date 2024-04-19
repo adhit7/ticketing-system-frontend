@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import AllQueries from '../AllQueries';
-import io from 'socket.io-client';
 import useQuery from '../../utils/useQuery';
-
-let socket;
 
 const AdminHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
-
   const { queries } = useSelector((state) => state.data);
 
-  const dispatch = useDispatch();
+  const [assignedQueries, setAssignedQueries] = useState([]);
+  const [unAssignedQueries, setUnAssignedQueries] = useState([]);
 
   const { getQueries } = useQuery();
 
@@ -19,11 +16,18 @@ const AdminHome = () => {
     getQueries();
   }, []);
 
-  // useEffect(() => {
-  //   socket = io('http://localhost:4000/');
-  //   socket.emit('setup', userInfo);
-  //   socket.on('connection', () => {});
-  // }, []);
+  useEffect(() => {
+    if (queries?.length > 0) {
+      const assignQueries = queries
+        ?.filter((item) => item?.status === 'ASSIGNED')
+        ?.slice(0, 5);
+      setAssignedQueries(assignQueries);
+      const unAssignQueries = queries
+        ?.filter((item) => item?.status === 'UNASSIGNED')
+        ?.slice(0, 5);
+      setUnAssignedQueries(unAssignQueries);
+    }
+  }, [queries]);
 
   return (
     <div>

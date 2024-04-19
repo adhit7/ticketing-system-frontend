@@ -5,7 +5,7 @@ import CreateBatch from '../../../pages/Admin/CreateBatch';
 import CreateMentor from '../../../pages/Admin/CreateMentor';
 import CreateLearner from '../../../pages/Admin/CreateLearner';
 import Navbar from '../../Navbar';
-import QueryFullDetails from '../../../pages/Admin/QueryFullDetails';
+import QueryFullDetails from '../../../pages/QueryFullDetails';
 
 const AdminLayout = () => {
   return (

@@ -26,7 +26,6 @@ const RequireUser = () => {
           />
         );
     }
-    // return <Outlet />;
   }
 
   return (
