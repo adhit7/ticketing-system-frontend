@@ -2,7 +2,7 @@ import { ErrorMessage, Field, useField } from 'formik';
 import React from 'react';
 
 const inputClass =
-  'text-gray-700 bg-gray-100 border-gray-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
+  'text-gray-700 bg-gray-100 border-gray-300  focus:outline-none sm:text-sm';
 
 const OptionBox = (props) => {
   const [field, meta] = useField(props);
@@ -24,7 +24,7 @@ const OptionBox = (props) => {
             <label
               key={item}
               htmlFor={item}
-              className='ms-2 text-sm font-medium mt-5'
+              className='ms-2 text-sm font-medium mt-5 items-center'
             >
               <Field
                 type={type}
@@ -32,7 +32,9 @@ const OptionBox = (props) => {
                 value={item}
                 className={`
                 ${inputClass}  
-                ${errorClass ? 'border border-red-500' : ''}`}
+                ${errorClass ? 'border border-red-500' : ''}
+                ${type !== 'radio' ? 'rounded' : ''}
+              `}
               />
               {item}
             </label>

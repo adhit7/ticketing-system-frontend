@@ -7,6 +7,8 @@ import useQuery from '../hooks/useQuery';
 import useConversation from '../hooks/useConversation';
 import { io } from 'socket.io-client';
 import Modal from '../components/Modal';
+import { useAssignQueryMutation } from '../slices/adminApiSlice';
+import { toast } from 'react-toastify';
 
 let socket;
 
@@ -23,6 +25,9 @@ const QueryFullDetails = () => {
 
   const { solveQuery } = useQuery();
   const { getAllConversation, sentMessage } = useConversation();
+
+  //Admin Funtcionality
+  const [assignQuery, { isLoading }] = useAssignQueryMutation();
 
   useEffect(() => {
     if (query === null) {
@@ -66,10 +71,9 @@ const QueryFullDetails = () => {
       query.conversationId?.toString()
     );
     setMessages(conversationData?.messages);
-    if (!socketConnected) {
-      socket.emit('join chat', conversationData?._id);
-      setSocketConnected(true);
-    }
+
+    socket.emit('join chat', conversationData?._id);
+    setSocketConnected(true);
   };
 
   const handleMessages = async (newMessage, setNewMessage) => {
@@ -77,10 +81,8 @@ const QueryFullDetails = () => {
     const receiverId =
       userInfo?.role === 'mentor' ? query?.raisedBy : query?.assignedTo;
 
-    if (!socketConnected) {
-      socket.emit('join chat', data?._id);
-      setSocketConnected(true);
-    }
+    socket.emit('join chat', data?._id);
+    setSocketConnected(true);
 
     socket.emit('new message', query?.conversationId, userInfo, {
       ...data?.message,
@@ -89,6 +91,20 @@ const QueryFullDetails = () => {
     setMessages([...messages, data?.message]);
     setNewMessage('');
     scrollToBottom();
+  };
+
+  //Admin Funtcionality
+  const handleAssignQuery = async () => {
+    try {
+      const res = await assignQuery({
+        queryId: query._id.toString(),
+        role: 'admin',
+      }).unwrap();
+      setQuery(res?.query);
+      toast.success(res?.message, { position: 'top-right' });
+    } catch (err) {
+      toast.error(err?.data?.message || err.error, { position: 'top-right' });
+    }
   };
 
   const handleOpenModal = () => {
@@ -105,7 +121,7 @@ const QueryFullDetails = () => {
   };
 
   return (
-    <div className='grid md:grid-cols-2 gap-4 p-3 mb-5 bg-white'>
+    <div className='grid md:grid-cols-2 gap-4 mb-5 bg-white'>
       {query && (
         <>
           <Conversation
@@ -121,6 +137,9 @@ const QueryFullDetails = () => {
             setQuery={setQuery}
             userInfo={userInfo}
             handleOpenModal={handleOpenModal}
+            assignQuery={assignQuery}
+            isLoading={isLoading}
+            handleAssignQuery={handleAssignQuery}
           />
           <Modal
             isOpen={modalOpen}

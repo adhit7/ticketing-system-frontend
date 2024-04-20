@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import { Form, Formik, useFormikContext } from 'formik';
@@ -9,7 +9,7 @@ import { useCreateQueryMutation } from '../../slices/learnerApiSlice';
 import { toast } from 'react-toastify';
 
 const Title = ({ children }) => (
-  <h6 className='text-violet-900 font-semibold my-3'>{children}</h6>
+  <h6 className='text-indigo-800 font-semibold my-3'>{children}</h6>
 );
 
 const CreateQuery = () => {
@@ -141,7 +141,7 @@ const CreateQuery = () => {
   };
 
   return (
-    <div className='h-full'>
+    <div className='h-full bg-gray-50'>
       <Formik
         initialValues={{
           category: '',
@@ -178,7 +178,7 @@ const CreateQuery = () => {
       >
         {({ values }) => (
           <Form>
-            <div className='bg-white flex flex-col shadow-lg rounded-xl p-8 sm:mx-auto my-10 mx-5 lg:w-7/12 sm:w-10/12 w-full mb-5'>
+            <div className='bg-white flex flex-col shadow-lg rounded-xl p-8 sm:mx-auto mb-3 mx-5 lg:w-7/12 sm:w-10/12 w-full mb-5'>
               <Title>Topic</Title>
 
               <div className='md:w-2/5 self-center'>
@@ -200,18 +200,6 @@ const CreateQuery = () => {
                       option='Sub-Category'
                     />
                   )}
-                {/* {values?.subCategory !== '' && values?.subCategory?.tags?.length > 0 &&
-                  categoryData.find((item) => item?.name === values?.category)
-                    ?.subCategory.length > 0 && (
-                    <Select
-                      label='Sub Category'
-                      name='subCategory'
-                      listOfItems={categoryData
-                        .find((item) => item?.name === values?.category)
-                        ?.subCategory?.map((item) => item?.['name'])}
-                      option='Sub-Category'
-                    />
-                )} */}
 
                 <Select
                   label='Preferred Language'

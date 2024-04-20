@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { formatDate } from '../utils/time';
+import EmptyList from './EmptyList';
 
 const Conversation = ({
   userInfo,
@@ -58,19 +59,14 @@ const Conversation = ({
             ))}
           </div>
         ) : (
-          <div className='flex flex-col justify-center items-center h-screen'>
-            <h2 className='mb-6 text-center text-lg	 font-bold text-gray-500'>
-              {status === 'ASSIGNED'
+          <EmptyList
+            content={
+              status === 'ASSIGNED'
                 ? `Query has been assigned and no messages yet! Send one now.`
                 : status === 'UNASSIGNED' &&
-                  `Query will be soon assigned to your batch mentor.`}
-            </h2>
-            <img
-              src={'https://www.zenclass.in/images/no_messages_student.svg'}
-              className='object-contain md:h-48 md:w-96 sm:h-30 sm:w-30 items-center'
-              alt='Zen Logo'
-            />
-          </div>
+                  `Query will be soon assigned to your batch mentor.`
+            }
+          />
         )}
       </div>
 

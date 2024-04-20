@@ -77,7 +77,6 @@ const NewPassword = () => {
           password,
         }).unwrap();
       }
-      setSuccessMessage(res?.message);
       dispatch(setCredentials({ ...res }));
       resetForm();
     } catch (err) {

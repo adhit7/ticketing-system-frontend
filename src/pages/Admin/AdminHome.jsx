@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../../components/AllQueries';
 import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
+import EmptyList from '../../components/EmptyList';
 
 const AdminHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -10,6 +11,7 @@ const AdminHome = () => {
 
   const [queryList, setQueryList] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const filterOptions = ['All', 'Unassigned', 'Open', 'Closed'];
 
   const dispatch = useDispatch();
 
@@ -47,15 +49,15 @@ const AdminHome = () => {
 
   return (
     <div>
-      {queryList?.length > 0 && (
-        <AllQueries
-          queries={queryList}
-          userInfo={userInfo}
-          options={['All', 'Unassigned', 'Open', 'Closed']}
-          selectedOption={selectedOption}
-          setSelectedOption={setSelectedOption}
-        />
-      )}
+      <AllQueries
+        queries={queryList}
+        userInfo={userInfo}
+        options={filterOptions}
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        content={`No queries have been raised by learner`}
+        classes={'md:h-60 md:w-90'}
+      />
     </div>
   );
 };

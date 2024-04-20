@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../../components/AllQueries';
 import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
+import EmptyList from '../../components/EmptyList';
 
 const LearnerHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -23,9 +24,12 @@ const LearnerHome = () => {
 
   return (
     <div>
-      {queries?.length > 0 && (
-        <AllQueries queries={queries} userInfo={userInfo} />
-      )}
+      <AllQueries
+        queries={queries}
+        userInfo={userInfo}
+        content={'You have not raised any queries!'}
+        classes={'md:h-60 md:w-90'}
+      />
     </div>
   );
 };

@@ -6,22 +6,14 @@ import { getTimeStamp } from '../utils/time';
 
 const labelClass = 'text-sm font-medium text-gray-700';
 
-const QueryDetails = ({ query, userInfo, handleOpenModal }) => {
-  //Admin Funtcionality
-  const [assignQuery, { isLoading }] = useAssignQueryMutation();
-  const handleQuery = async () => {
-    try {
-      const res = await assignQuery({
-        queryId: query._id.toString(),
-        role: 'admin',
-      }).unwrap();
-      setQuery(res?.query);
-      toast.success(res?.message, { position: 'top-right' });
-    } catch (err) {
-      toast.error(err?.data?.message || err.error, { position: 'top-right' });
-    }
-  };
-
+const QueryDetails = ({
+  query,
+  userInfo,
+  handleOpenModal,
+  assignQuery,
+  isLoading,
+  handleAssignQuery,
+}) => {
   return (
     <div className={`md:order-last order-first bg-white`}>
       <h2 className='px-3 py-8 text-indigo-900 opacity-90 text-xl font-semibold w-full border-b border-gray-300 md:ml-2'>
@@ -67,7 +59,7 @@ const QueryDetails = ({ query, userInfo, handleOpenModal }) => {
             loading={isLoading}
             message='Assigning'
             classes={'md:w-3/12 my-3'}
-            onClick={handleQuery}
+            onClick={handleAssignQuery}
           />
         </div>
       )}

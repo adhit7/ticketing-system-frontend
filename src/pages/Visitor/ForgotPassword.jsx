@@ -11,6 +11,7 @@ import { useMentorForgotPasswordMutation } from '../../slices/mentorApiSlice';
 import { setTempPasswordStatus } from '../../slices/authSlice';
 import { useDispatch } from 'react-redux';
 import { useLearnerForgotPasswordMutation } from '../../slices/learnerApiSlice';
+import { toast } from 'react-toastify';
 
 const ForgotPassword = () => {
   const [role, setRole] = useState('');
@@ -34,7 +35,7 @@ const ForgotPassword = () => {
       } else if (role === 'mentor') {
         res = await mentorForgotPassword({ email }).unwrap();
       }
-      setSuccessMessage(res?.message);
+      toast.success(res?.message, { position: 'top-right' });
       dispatch(setTempPasswordStatus(false));
       resetForm();
     } catch (err) {

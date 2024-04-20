@@ -1,6 +1,6 @@
 import React from 'react';
 import ZenLogo from '../assets/zen_logo.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAdminLogoutMutation } from '../slices/adminApiSlice';
@@ -9,6 +9,7 @@ import { removeQueries } from '../slices/dataSlice';
 
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const { pathname } = useLocation();
 
   const roleRoutes = {
     admin: [
@@ -25,6 +26,7 @@ const Navbar = () => {
 
   const logoutHandler = async () => {
     try {
+      //It is common for all roles to remove cookies and local storage
       await adminLogout();
       dispatch(removeQueries());
       dispatch(removeCredentials());
@@ -34,7 +36,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className='border-gray-200 bg-gray-50 dark:bg-indigo-400 dark:border-gray-700'>
+    <nav className='bg-indigo-500 text-white'>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
         <NavLink
           to='/'
@@ -48,7 +50,7 @@ const Navbar = () => {
         <button
           data-collapse-toggle='navbar-solid-bg'
           type='button'
-          className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+          className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden sm:block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
           aria-controls='navbar-solid-bg'
           aria-expanded='false'
         >
@@ -70,20 +72,22 @@ const Navbar = () => {
           </svg>
         </button>
         <div className='hidden w-full md:block md:w-auto' id='navbar-solid-bg'>
-          <ul className='flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700'>
+          <ul className='flex flex-col font-medium mt-4 rounded-lg bg-indigo-400 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent'>
             {userInfo &&
               roleRoutes?.[userInfo?.role]?.map((item) => (
                 <NavLink
                   key={item.route}
                   to={item.route}
-                  className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
+                  className={`block py-2 px-3 rounded md:bg-transparent md:text-white ${
+                    item?.route == pathname && 'md:bg-indigo-700 md:p-2'
+                  }`}
                 >
                   {item.name}
                 </NavLink>
               ))}
             <button
               onClick={logoutHandler}
-              className='block py-2 px-3 md:p-0 text-white bg-white-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent'
+              className={`text-start hover:bg-indigo-700 hover:mx-1 block py-2 px-3 rounded md:bg-transparent md:text-white`}
             >
               Logout
             </button>
