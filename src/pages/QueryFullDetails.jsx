@@ -45,7 +45,6 @@ const QueryFullDetails = () => {
     socket = io('https://ticketing-system-backend-gdz3.onrender.com/');
     socket.emit('setup', userInfo);
 
-    console.log('2', socket);
     // eslint-disable-next-line
   }, []);
 
@@ -73,8 +72,10 @@ const QueryFullDetails = () => {
     );
     setMessages(conversationData?.messages);
 
-    socket.emit('join chat', conversationData?._id);
-    setSocketConnected(true);
+    if (!socketConnected) {
+      socket.emit('join chat', conversationData?._id);
+      setSocketConnected(true);
+    }
   };
 
   const handleMessages = async (newMessage, setNewMessage) => {
@@ -82,8 +83,10 @@ const QueryFullDetails = () => {
     const receiverId =
       userInfo?.role === 'mentor' ? query?.raisedBy : query?.assignedTo;
 
-    socket.emit('join chat', data?._id);
-    setSocketConnected(true);
+    if (!socketConnected) {
+      socket.emit('join chat', conversationData?._id);
+      setSocketConnected(true);
+    }
 
     socket.emit('new message', query?.conversationId, userInfo, {
       ...data?.message,
