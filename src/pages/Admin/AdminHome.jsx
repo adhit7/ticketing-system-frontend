@@ -1,38 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../AllQueries';
 import useQuery from '../../utils/useQuery';
+import { setQueries } from '../../slices/dataSlice';
 
 const AdminHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { queries } = useSelector((state) => state.data);
 
-  const [assignedQueries, setAssignedQueries] = useState([]);
-  const [unAssignedQueries, setUnAssignedQueries] = useState([]);
+  const [queryList, setQueryList] = useState([]);
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const dispatch = useDispatch();
 
   const { getQueries } = useQuery();
 
   useEffect(() => {
-    getQueries();
+    if (queries?.length === 0) {
+      handleQueries();
+    }
   }, []);
 
   useEffect(() => {
-    if (queries?.length > 0) {
-      const assignQueries = queries
-        ?.filter((item) => item?.status === 'ASSIGNED')
-        ?.slice(0, 5);
-      setAssignedQueries(assignQueries);
-      const unAssignQueries = queries
-        ?.filter((item) => item?.status === 'UNASSIGNED')
-        ?.slice(0, 5);
-      setUnAssignedQueries(unAssignQueries);
+    if (selectedOption !== '') {
+      handleFilter();
     }
-  }, [queries]);
+  }, [selectedOption]);
+
+  const handleQueries = async () => {
+    const data = await getQueries();
+    dispatch(setQueries(data));
+    setSelectedOption('All');
+  };
+
+  const handleFilter = () => {
+    if (selectedOption === 'Unassigned') {
+      setQueryList(queries.filter((item) => item?.status === 'UNASSIGNED'));
+    } else if (selectedOption === 'Open') {
+      setQueryList(queries.filter((item) => item?.status === 'ASSIGNED'));
+    } else if (selectedOption === 'Closed') {
+      setQueryList(queries.filter((item) => item?.status === 'CLOSED'));
+    } else {
+      setQueryList(queries);
+    }
+  };
 
   return (
     <div>
-      {queries?.length > 0 && (
-        <AllQueries queries={queries} role={userInfo?.role} />
+      {queryList?.length > 0 && (
+        <AllQueries
+          queries={queryList}
+          userInfo={userInfo}
+          options={['All', 'Unassigned', 'Open', 'Closed']}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
       )}
     </div>
   );

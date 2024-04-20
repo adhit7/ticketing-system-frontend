@@ -1,18 +1,25 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../AllQueries';
 import useQuery from '../../utils/useQuery';
+import { setQueries } from '../../slices/dataSlice';
 
 const LearnerHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
-
   const { queries } = useSelector((state) => state.data);
+
+  const dispatch = useDispatch();
 
   const { getQueries } = useQuery();
 
   useEffect(() => {
-    getQueries();
+    handleQueries();
   }, []);
+
+  const handleQueries = async () => {
+    const queries = await getQueries();
+    dispatch(setQueries(queries));
+  };
 
   return (
     <div>

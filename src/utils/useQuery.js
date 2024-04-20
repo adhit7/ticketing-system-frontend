@@ -24,7 +24,7 @@ function useQuery() {
         role: userInfo?.role,
       }).unwrap();
 
-      dispatch(setQueries(res?.queries));
+      return res?.queries;
     } catch (err) {
       toast.error(err?.data?.message || err.error, { position: 'top-right' });
     }
