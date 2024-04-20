@@ -45,6 +45,7 @@ const QueryFullDetails = () => {
     socket = io('https://zen-class-query.netlify.app');
     socket.emit('setup', userInfo);
 
+    console.log('2', socket);
     // eslint-disable-next-line
   }, []);
 
