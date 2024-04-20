@@ -1,7 +1,7 @@
 import { fetchBaseQuery, createApi } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:4000',
+  baseUrl: 'https://ticketing-system-backend-gdz3.onrender.com',
   credentials: 'include',
 });
 

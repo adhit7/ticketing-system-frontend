@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../../components/AllQueries';
 import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
-import EmptyList from '../../components/EmptyList';
 
 const AdminHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
