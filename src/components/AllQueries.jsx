@@ -7,7 +7,7 @@ import EmptyList from './EmptyList';
 const AllQueries = ({
   userInfo,
   queries,
-  options = [],
+  options,
   selectedOption,
   setSelectedOption,
   content,
