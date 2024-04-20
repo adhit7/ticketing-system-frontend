@@ -8,7 +8,7 @@ const AllQueries = ({
   userInfo,
   queries,
   options,
-  selectedOption,
+  selectedOption = '',
   setSelectedOption,
   content,
   classes,
@@ -23,7 +23,7 @@ const AllQueries = ({
 
   return (
     <div className='flex items-center flex-col overflow-hidden min-h-screen p-4'>
-      {options?.length > 0 && (
+      {selectedOption !== '' && (
         <div className='w-[75%] px-3 mx-2 flex justify-end '>
           <Dropdown
             options={options}
