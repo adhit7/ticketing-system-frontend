@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../../components/AllQueries';
 import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
+import QuerySkeleton from '../../components/QuerySkeleton';
 
 const AdminHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -10,6 +11,7 @@ const AdminHome = () => {
 
   const [queryList, setQueryList] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const [loading, setLoading] = useState(true);
   const filterOptions = ['All', 'Unassigned', 'Open', 'Closed'];
 
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const AdminHome = () => {
 
   useEffect(() => {
     if (selectedOption !== '') {
+      setLoading(true);
       handleFilter();
     }
   }, [selectedOption]);
@@ -32,6 +35,7 @@ const AdminHome = () => {
     const data = await getQueries();
     dispatch(setQueries(data));
     setSelectedOption('All');
+    setLoading(false);
   };
 
   const handleFilter = () => {
@@ -48,15 +52,19 @@ const AdminHome = () => {
 
   return (
     <div>
-      <AllQueries
-        queries={queryList}
-        userInfo={userInfo}
-        options={filterOptions}
-        selectedOption={selectedOption}
-        setSelectedOption={setSelectedOption}
-        content={`No queries have been raised by learner`}
-        classes={'md:h-60 md:w-90'}
-      />
+      {loading ? (
+        <QuerySkeleton />
+      ) : (
+        <AllQueries
+          queries={queryList}
+          userInfo={userInfo}
+          options={filterOptions}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+          content={`No queries have been raised by learner`}
+          classes={'md:h-60 md:w-90'}
+        />
+      )}
     </div>
   );
 };
