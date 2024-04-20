@@ -42,10 +42,8 @@ const QueryFullDetails = () => {
   }, [query]);
 
   useEffect(() => {
-    socket = io('http://localhost:4000');
+    socket = io('https://zen-class-query.netlify.app');
     socket.emit('setup', userInfo);
-
-    console.log('w', socket);
 
     // eslint-disable-next-line
   }, []);
