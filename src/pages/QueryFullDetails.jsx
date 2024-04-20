@@ -72,21 +72,13 @@ const QueryFullDetails = () => {
     );
     setMessages(conversationData?.messages);
 
-    if (!socketConnected) {
-      socket.emit('join chat', conversationData?._id);
-      setSocketConnected(true);
-    }
+    socket.emit('join chat', conversationData?._id);
   };
 
   const handleMessages = async (newMessage, setNewMessage) => {
     const data = await sentMessage(query?._id, newMessage);
     const receiverId =
       userInfo?.role === 'mentor' ? query?.raisedBy : query?.assignedTo;
-
-    if (!socketConnected) {
-      socket.emit('join chat', data?._id);
-      setSocketConnected(true);
-    }
 
     socket.emit('new message', query?.conversationId, userInfo, {
       ...data?.message,
