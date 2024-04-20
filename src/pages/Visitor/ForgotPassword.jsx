@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import FormHeader from '../components/FormHeader';
-import ErrorBox from '../components/ErrorBox';
-import SuccessBox from '../components/SuccessBox';
+import React, { useEffect, useState } from 'react';
+import FormHeader from '../../components/FormHeader';
+import ErrorBox from '../../components/ErrorBox';
+import SuccessBox from '../../components/SuccessBox';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import Button from '../components/Button';
-import Input from '../components/Input';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 import { Link, useLocation } from 'react-router-dom';
-import { useMentorForgotPasswordMutation } from '../slices/mentorApiSlice';
-import { setTempPasswordStatus } from '../slices/authSlice';
+import { useMentorForgotPasswordMutation } from '../../slices/mentorApiSlice';
+import { setTempPasswordStatus } from '../../slices/authSlice';
 import { useDispatch } from 'react-redux';
-import { useLearnerForgotPasswordMutation } from '../slices/learnerApiSlice';
+import { useLearnerForgotPasswordMutation } from '../../slices/learnerApiSlice';
 
 const ForgotPassword = () => {
   const [role, setRole] = useState('');
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
   }, []);
 
   return (
-    <div className='min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 m-auto'>
+    <div className='min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 m-auto  bg-gray-50'>
       <FormHeader>Forgot Password</FormHeader>
       {error && <ErrorBox message={error} />}
       <div className='sm:mx-auto sm:w-full mb-4 mt-4 sm:max-w-md rounded bg-white shadow shadow-md p-9'>

@@ -7,7 +7,7 @@ const FormHeader = ({ children }) => (
   <div className='sm:mx-auto sm:w-full sm:max-w-md'>
     <div className='flex justify-center items-center'>
       <Link to='/'>
-        <img src={ZenLogo} className='h-12 w-12' alt='Zen Logo' />
+        <img src={ZenLogo} className='h-16 w-16' alt='Zen Logo' />
       </Link>
     </div>
     <h2 className='mt-6 mb-6 text-center text-3xl font-extrabold text-gray-900'>

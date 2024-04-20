@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import AdminLayout from './layout/AdminLayout';
 import MentorLayout from './layout/MentorLayout';
 import LearnerLayout from './layout/LearnerLayout';

@@ -19,7 +19,7 @@ const Conversation = ({
   return (
     <div className='bg-gray-100 flex flex-col sm:border-r-2 sm:border-gray-400 h-screen md:order-first order-last'>
       <div className='bg-white flex justify-end px-4 py-2'>
-        <div className='text-sm ml-2 px-3 py-3 rounded-md text-green-900 bg-green-300'>
+        <div className='bg-green-50 font-semibold text-sm text-green-600 px-4 py-2 rounded-md'>
           {status === 'CLOSED' ? 'CLOSED' : 'OPEN'}
         </div>
       </div>

@@ -11,27 +11,33 @@ const OptionBox = (props) => {
   const errorClass = meta.touched && meta.error ? 'error' : '';
 
   return (
-    <div className='flex justify-between items-center justify-self-center	flex-wrap py-5 w-9/12'>
-      <label className='text-lg font-medium text-gray-700'>
+    <div>
+      <label className='text-lg font-medium text-gray-700 text-start'>
         {label}
         {info && (
           <div className='text-sm font-medium text-gray-700'>({info})</div>
         )}
       </label>
-      <div className='grid grid-cols-3 gap-2'>
-        {listOfItems?.map((item) => (
-          <label key={item} htmlFor={item} className='ms-2 text-sm font-medium'>
-            <Field
-              type={type}
-              name={name}
-              value={item}
-              className={`
+      <div>
+        <div className='grid grid-cols-3 gap-2'>
+          {listOfItems?.map((item) => (
+            <label
+              key={item}
+              htmlFor={item}
+              className='ms-2 text-sm font-medium mt-5'
+            >
+              <Field
+                type={type}
+                name={name}
+                value={item}
+                className={`
                 ${inputClass}  
                 ${errorClass ? 'border border-red-500' : ''}`}
-            />
-            {item}
-          </label>
-        ))}
+              />
+              {item}
+            </label>
+          ))}
+        </div>
         <ErrorMessage
           name={name}
           component='div'

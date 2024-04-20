@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../components/Button';
+import Button from './Button';
 import { useAssignQueryMutation } from '../slices/adminApiSlice';
 import { toast } from 'react-toastify';
 import { getTimeStamp } from '../utils/time';

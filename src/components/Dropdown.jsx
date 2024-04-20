@@ -17,7 +17,7 @@ const Dropdown = ({ options, selectedOption, setSelectedOption }) => {
       <div>
         <button
           type='button'
-          className='inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500'
+          className='inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none  focus:ring-offset-2 focus:ring-offset-gray-100'
           id='menu-button'
           aria-expanded='true'
           aria-haspopup='true'
@@ -48,13 +48,15 @@ const Dropdown = ({ options, selectedOption, setSelectedOption }) => {
           aria-labelledby='menu-button'
           tabIndex='-1'
         >
-          <div className='py-1' role='none'>
+          <div role='none'>
             {options.map((item) => (
               <a
                 // href='#'
                 key={item}
-                className={`text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 ${
-                  selectedOption === item ? 'bg-gray-100 text-gray-900' : ''
+                className={`text-gray-700 block px-4 py-2 text-sm hover:bg-indigo-600 hover:text-white rounded ${
+                  selectedOption === item
+                    ? 'bg-indigo-600 text-white rounded'
+                    : ''
                 }`}
                 role='menuitem'
                 tabIndex='-1'

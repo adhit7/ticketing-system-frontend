@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import LearnerHome from '../../../pages/Learner/LearnerHome';
 import Navbar from '../../Navbar';
 import CreateQuery from '../../../pages/Learner/CreateQuery';
-import QueryDetails from '../../../pages/QueryDetails';
 import QueryFullDetails from '../../../pages/QueryFullDetails';
 
 const LearnerLayout = () => {

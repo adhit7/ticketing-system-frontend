@@ -2,17 +2,17 @@ import { Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { setCredentials } from '../slices/authSlice';
+import { setCredentials } from '../../slices/authSlice';
 
 import * as Yup from 'yup';
 
-import Button from '../components/Button';
-import ErrorBox from '../components/ErrorBox';
-import FormHeader from '../components/FormHeader';
-import Input from '../components/Input';
-import { useAdminLoginMutation } from '../slices/adminApiSlice';
-import { useLearnerLoginMutation } from '../slices/learnerApiSlice';
-import { useMentorLoginMutation } from '../slices/mentorApiSlice';
+import Button from '../../components/Button';
+import ErrorBox from '../../components/ErrorBox';
+import FormHeader from '../../components/FormHeader';
+import Input from '../../components/Input';
+import { useAdminLoginMutation } from '../../slices/adminApiSlice';
+import { useLearnerLoginMutation } from '../../slices/learnerApiSlice';
+import { useMentorLoginMutation } from '../../slices/mentorApiSlice';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,6 @@ const Login = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (pathname.startsWith('/learner')) {
       setRole('learner');
     } else if (pathname.startsWith('/mentor')) {
@@ -59,6 +58,7 @@ const Login = () => {
     } else if (pathname.startsWith('/admin')) {
       setRole('admin');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -141,7 +141,7 @@ const CreateQuery = () => {
   };
 
   return (
-    <div className='bg-gray-50 h-full	'>
+    <div className='h-full'>
       <Formik
         initialValues={{
           category: '',

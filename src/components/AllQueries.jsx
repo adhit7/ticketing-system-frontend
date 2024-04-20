@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Query from './Query';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Dropdown from '../components/Dropdown';
+import Dropdown from './Dropdown';
+import Query from './Query';
 
 const AllQueries = ({
   userInfo,

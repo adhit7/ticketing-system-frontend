@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Conversation from './Conversation';
-import QueryDetails from './QueryDetails';
+import Conversation from '../components/Conversation';
+import QueryDetails from '../components/QueryDetails';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import useQuery from '../utils/useQuery';
-import useConversation from '../utils/useConversation';
+import useQuery from '../hooks/useQuery';
+import useConversation from '../hooks/useConversation';
 import { io } from 'socket.io-client';
 import Modal from '../components/Modal';
 
@@ -67,7 +67,6 @@ const QueryFullDetails = () => {
     );
     setMessages(conversationData?.messages);
     if (!socketConnected) {
-      console.log('First');
       socket.emit('join chat', conversationData?._id);
       setSocketConnected(true);
     }
@@ -79,7 +78,6 @@ const QueryFullDetails = () => {
       userInfo?.role === 'mentor' ? query?.raisedBy : query?.assignedTo;
 
     if (!socketConnected) {
-      console.log('Second', data);
       socket.emit('join chat', data?._id);
       setSocketConnected(true);
     }

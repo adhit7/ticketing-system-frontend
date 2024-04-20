@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AllQueries from '../AllQueries';
-import useQuery from '../../utils/useQuery';
+import AllQueries from '../../components/AllQueries';
+import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
 
 const AdminHome = () => {
@@ -16,7 +16,7 @@ const AdminHome = () => {
   const { getQueries } = useQuery();
 
   useEffect(() => {
-    if (queries?.length === 0) {
+    if (queries?.length === 0 || queryList?.length === 0) {
       handleQueries();
     }
   }, []);

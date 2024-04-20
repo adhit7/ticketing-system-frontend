@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { setQueries } from '../slices/dataSlice';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
   useAllQueriesMutation,
@@ -9,7 +8,6 @@ import {
 
 function useQuery() {
   const { userInfo } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   const [allQueries] = useAllQueriesMutation();
 

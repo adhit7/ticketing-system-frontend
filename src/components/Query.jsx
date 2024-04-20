@@ -1,16 +1,10 @@
 import React from 'react';
-
-const getTimeStamp = (id) => {
-  if (!id) return '';
-  const timestamp = ('' + id).toString().substring(0, 8);
-  const date = new Date(parseInt(timestamp, 16) * 1000);
-  return date.toLocaleString();
-};
+import { getTimeStamp } from '../utils/time';
 
 function Query({ query, action }) {
   return (
     <div
-      className='m-2 p-4 border group rounded-xl min-w-fit  cursor-pointer bg-white space-y-4 transition-shadow shadow-md hover:shadow-lg hover:bg-purple-600 hover:text-white '
+      className='m-2 p-4 border group rounded-xl min-w-fit  cursor-pointer bg-white space-y-4 transition-shadow shadow-md hover:shadow-lg hover:bg-indigo-500 hover:text-white '
       onClick={() => action(query)}
     >
       <div className='flex items-center justify-between w-100'>

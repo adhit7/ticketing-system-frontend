@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import FormHeader from '../components/FormHeader';
-import ErrorBox from '../components/ErrorBox';
-import SuccessBox from '../components/SuccessBox';
+import FormHeader from '../../components/FormHeader';
+import ErrorBox from '../../components/ErrorBox';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import Button from '../components/Button';
-import Input from '../components/Input';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useMentorNewPasswordMutation,
   useMentorTempPasswordMutation,
-} from '../slices/mentorApiSlice';
-import { setCredentials, setTempPasswordStatus } from '../slices/authSlice';
+} from '../../slices/mentorApiSlice';
+import { setCredentials, setTempPasswordStatus } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
 import {
   useLearnerNewPasswordMutation,
   useLearnerTempPasswordMutation,
-} from '../slices/learnerApiSlice';
+} from '../../slices/learnerApiSlice';
 
 const NewPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -97,7 +96,7 @@ const NewPassword = () => {
   }, []);
 
   return (
-    <div className='min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 m-auto'>
+    <div className='min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 m-auto bg-gray-50'>
       <FormHeader>Reset Password</FormHeader>
       <div className='sm:mx-auto sm:w-full mb-4 mt-4 sm:max-w-md rounded bg-white shadow shadow-md p-9'>
         {error && <ErrorBox message={error} />}

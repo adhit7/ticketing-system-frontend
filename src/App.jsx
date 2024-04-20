@@ -10,10 +10,9 @@ import AdminLayout from './components/authentication/layout/AdminLayout';
 import MentorLayout from './components/authentication/layout/MentorLayout';
 import LearnerLayout from './components/authentication/layout/LearnerLayout';
 
-import Login from './pages/Login';
-import NewPassword from './pages/NewPassword';
-import ForgotPassword from './pages/ForgotPassword';
-import Navbar from './components/Navbar';
+import Login from './pages/Visitor/Login';
+import NewPassword from './pages/Visitor/NewPassword';
+import ForgotPassword from './pages/Visitor/ForgotPassword';
 
 function App() {
   return (
@@ -41,7 +40,6 @@ function App() {
             <Route path='new-password/:token' element={<NewPassword />} />
             <Route path='forgot-password' element={<ForgotPassword />} />
           </Route>
-          {/* <Route path='/user/verify-email/:id' element={<ActivationMail />} /> */}
         </Route>
       </Routes>
       <ToastContainer />
