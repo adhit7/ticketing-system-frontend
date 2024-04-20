@@ -78,8 +78,8 @@ const Navbar = () => {
                 <NavLink
                   key={item.route}
                   to={item.route}
-                  className={`block py-2 px-3 rounded md:bg-transparent md:text-white ${
-                    item?.route == pathname && 'md:bg-indigo-700 md:p-2'
+                  className={`block py-2 px-3 rounded md:text-white ${
+                    item?.route == pathname ? 'bg-indigo-700 p-2' : ''
                   }`}
                 >
                   {item.name}
@@ -87,7 +87,7 @@ const Navbar = () => {
               ))}
             <button
               onClick={logoutHandler}
-              className={`text-start hover:bg-indigo-700 hover:mx-1 block py-2 px-3 rounded md:bg-transparent md:text-white`}
+              className={`text-start block py-2 px-3 rounded md:bg-transparent md:text-white`}
             >
               Logout
             </button>
