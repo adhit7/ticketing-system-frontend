@@ -95,7 +95,7 @@ const NewPassword = () => {
   }, []);
 
   return (
-    <div className='min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 m-auto bg-gray-50'>
+    <div className='bg-gray-50 min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 m-auto'>
       <FormHeader>Reset Password</FormHeader>
       <div className='sm:mx-auto sm:w-full mb-4 mt-4 sm:max-w-md rounded bg-white shadow shadow-md p-9'>
         {error && <ErrorBox message={error} />}
