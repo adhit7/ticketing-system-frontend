@@ -84,7 +84,7 @@ const QueryFullDetails = () => {
       userInfo?.role === 'mentor' ? query?.raisedBy : query?.assignedTo;
 
     if (!socketConnected) {
-      socket.emit('join chat', conversationData?._id);
+      socket.emit('join chat', data?._id);
       setSocketConnected(true);
     }
 
