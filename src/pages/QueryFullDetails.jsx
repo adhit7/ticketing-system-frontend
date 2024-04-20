@@ -42,7 +42,7 @@ const QueryFullDetails = () => {
   }, [query]);
 
   useEffect(() => {
-    socket = io('https://zen-class-query.netlify.app');
+    socket = io('https://zen-class-query.netlify.app/');
     socket.emit('setup', userInfo);
 
     console.log('2', socket);
