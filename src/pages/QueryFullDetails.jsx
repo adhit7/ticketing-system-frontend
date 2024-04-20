@@ -45,6 +45,8 @@ const QueryFullDetails = () => {
     socket = io('http://localhost:4000');
     socket.emit('setup', userInfo);
 
+    console.log('w', socket);
+
     // eslint-disable-next-line
   }, []);
 
