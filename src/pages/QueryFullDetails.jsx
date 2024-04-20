@@ -42,9 +42,7 @@ const QueryFullDetails = () => {
   }, [query]);
 
   useEffect(() => {
-    socket = io('https://zen-class-query.netlify.app/', {
-      transports: ['websocket'],
-    });
+    socket = io('https://ticketing-system-backend-gdz3.onrender.com/');
     socket.emit('setup', userInfo);
 
     console.log('2', socket);
