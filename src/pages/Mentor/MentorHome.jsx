@@ -62,7 +62,11 @@ const MentorHome = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
         loading={loading}
-        content={'No assigned queries for you'}
+        content={
+          selectedOption === 'All'
+            ? `No assigned queries for you`
+            : `No Queries are found`
+        }
         classes={'md:h-60 md:w-90'}
       />
     </div>

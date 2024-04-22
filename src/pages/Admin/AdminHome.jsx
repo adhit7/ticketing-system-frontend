@@ -64,7 +64,11 @@ const AdminHome = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
         loading={loading}
-        content={`No queries have been raised by learner`}
+        content={
+          selectedOption === 'All'
+            ? `No queries have been raised by learner`
+            : `No Queries are found`
+        }
         classes={'md:h-60 md:w-90'}
       />
     </div>
