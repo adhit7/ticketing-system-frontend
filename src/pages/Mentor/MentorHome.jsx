@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../../components/AllQueries';
 import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
-import EmptyList from '../../components/EmptyList';
 
 const MentorHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -11,6 +10,7 @@ const MentorHome = () => {
 
   const [queryList, setQueryList] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const [loading, setLoading] = useState(true);
   const filterOptions = ['All', 'Open', 'Closed'];
 
   const dispatch = useDispatch();
@@ -33,16 +33,24 @@ const MentorHome = () => {
     const queries = await getQueries();
     dispatch(setQueries(queries));
     setSelectedOption('All');
+    setLoading(false);
   };
 
   const handleFilter = () => {
+    setLoading(true); // Indicate that filtering is in progress
+
+    let filteredList = queries; // Initialize with the original list
     if (selectedOption === 'Open') {
-      setQueryList(queries.filter((item) => item?.status === 'ASSIGNED'));
+      filteredList = queries.filter((item) => item?.status === 'ASSIGNED');
     } else if (selectedOption === 'Closed') {
-      setQueryList(queries.filter((item) => item?.status === 'CLOSED'));
+      filteredList = queries.filter((item) => item?.status === 'CLOSED');
     } else {
-      setQueryList(queries);
+      filteredList = queries;
     }
+
+    // Set the filtered list and turn off loading
+    setQueryList(filteredList);
+    setLoading(false); // Indicate that filtering is complete
   };
 
   return (
@@ -53,6 +61,7 @@ const MentorHome = () => {
         options={filterOptions}
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
+        loading={loading}
         content={'No assigned queries for you'}
         classes={'md:h-60 md:w-90'}
       />

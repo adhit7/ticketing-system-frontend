@@ -10,6 +10,7 @@ const AdminHome = () => {
 
   const [queryList, setQueryList] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const [loading, setLoading] = useState(true);
   const filterOptions = ['All', 'Unassigned', 'Open', 'Closed'];
 
   const dispatch = useDispatch();
@@ -32,18 +33,26 @@ const AdminHome = () => {
     const data = await getQueries();
     dispatch(setQueries(data));
     setSelectedOption('All');
+    setLoading(false);
   };
 
   const handleFilter = () => {
+    setLoading(true); // Indicate that filtering is in progress
+
+    let filteredList = queries; // Initialize with the original list
     if (selectedOption === 'Unassigned') {
-      setQueryList(queries.filter((item) => item?.status === 'UNASSIGNED'));
+      filteredList = queries.filter((item) => item?.status === 'UNASSIGNED');
     } else if (selectedOption === 'Open') {
-      setQueryList(queries.filter((item) => item?.status === 'ASSIGNED'));
+      filteredList = queries.filter((item) => item?.status === 'ASSIGNED');
     } else if (selectedOption === 'Closed') {
-      setQueryList(queries.filter((item) => item?.status === 'CLOSED'));
+      filteredList = queries.filter((item) => item?.status === 'CLOSED');
     } else {
-      setQueryList(queries);
+      filteredList = queries;
     }
+
+    // Set the filtered list and turn off loading
+    setQueryList(filteredList);
+    setLoading(false); // Indicate that filtering is complete
   };
 
   return (
@@ -54,6 +63,7 @@ const AdminHome = () => {
         options={filterOptions}
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
+        loading={loading}
         content={`No queries have been raised by learner`}
         classes={'md:h-60 md:w-90'}
       />
