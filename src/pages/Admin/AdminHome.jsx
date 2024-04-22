@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllQueries from '../../components/AllQueries';
 import useQuery from '../../hooks/useQuery';
 import { setQueries } from '../../slices/dataSlice';
-import QuerySkeleton from '../../components/QuerySkeleton';
 
 const AdminHome = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -26,7 +25,6 @@ const AdminHome = () => {
 
   useEffect(() => {
     if (selectedOption !== '') {
-      setLoading(true);
       handleFilter();
     }
   }, [selectedOption]);
@@ -39,32 +37,36 @@ const AdminHome = () => {
   };
 
   const handleFilter = () => {
+    setLoading(true); // Indicate that filtering is in progress
+
+    let filteredList = queries; // Initialize with the original list
     if (selectedOption === 'Unassigned') {
-      setQueryList(queries.filter((item) => item?.status === 'UNASSIGNED'));
+      filteredList = queries.filter((item) => item?.status === 'UNASSIGNED');
     } else if (selectedOption === 'Open') {
-      setQueryList(queries.filter((item) => item?.status === 'ASSIGNED'));
+      filteredList = queries.filter((item) => item?.status === 'ASSIGNED');
     } else if (selectedOption === 'Closed') {
-      setQueryList(queries.filter((item) => item?.status === 'CLOSED'));
+      filteredList = queries.filter((item) => item?.status === 'CLOSED');
     } else {
-      setQueryList(queries);
+      filteredList = queries;
     }
+
+    // Set the filtered list and turn off loading
+    setQueryList(filteredList);
+    setLoading(false); // Indicate that filtering is complete
   };
 
   return (
     <div>
-      {loading ? (
-        <QuerySkeleton />
-      ) : (
-        <AllQueries
-          queries={queryList}
-          userInfo={userInfo}
-          options={filterOptions}
-          selectedOption={selectedOption}
-          setSelectedOption={setSelectedOption}
-          content={`No queries have been raised by learner`}
-          classes={'md:h-60 md:w-90'}
-        />
-      )}
+      <AllQueries
+        queries={queryList}
+        userInfo={userInfo}
+        options={filterOptions}
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        loading={loading}
+        content={`No queries have been raised by learner`}
+        classes={'md:h-60 md:w-90'}
+      />
     </div>
   );
 };

@@ -2,16 +2,21 @@ import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 const SkeletonItem = () => (
-  <div className='m-2 p-4 border group rounded-xl min-w-fit  cursor-pointer bg-white space-y-4 transition-shadow shadow-md hover:shadow-lg hover:bg-indigo-500 hover:text-white h-70'></div>
+  <div className='bg-white w-3/4 transition-shadow shadow-md mb-5'>
+    <Skeleton className='w-100 h-24' />
+  </div>
 );
 
-const QuerySkeleton = () => {
+const QuerySkeleton = ({ count = 5 }) => {
   return (
-    <div className='md:w-[75%] sm:w-[85%] overflow-y-auto overflow-y-hidden h-full'>
-      <SkeletonItem>
-        <Skeleton />
-      </SkeletonItem>
-    </div>
+    <>
+      {Array(count)
+        .fill(1)
+        .map((_, index) => (
+          // render your skeleton here
+          <SkeletonItem key={`skeleton-${index}`} />
+        ))}
+    </>
   );
 };
 
