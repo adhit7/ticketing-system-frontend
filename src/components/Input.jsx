@@ -6,7 +6,7 @@ const inputClass =
 
 const Input = (props) => {
   const [field, meta] = useField(props);
-  const { name, label, type, classes = '' } = props;
+  const { name, label, type, placeholder = '', classes = '' } = props;
   const errorClass = meta.touched && meta.error ? 'error' : '';
 
   return (
@@ -22,6 +22,7 @@ const Input = (props) => {
             ${classes}
           `}
           type={type}
+          placeholder={placeholder}
           {...field}
         />
       </div>

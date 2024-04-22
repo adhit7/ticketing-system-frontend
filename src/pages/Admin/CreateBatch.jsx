@@ -48,7 +48,7 @@ const CreateBatch = () => {
                   label='Course Name'
                   type='courseName'
                   name='courseName'
-                  placeholder='Enter unique name for the course'
+                  placeholder='Enter unique name for the course (Eg:- FullStack 3)'
                 />
                 <div className='flex justify-center'>
                   <Button
