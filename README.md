@@ -16,7 +16,7 @@ Backend repo - https://github.com/adhit7/ticketing-system-backend<br >
 3.Mentor:<br >
   -Chat with the learner query that is assigned from admin towards the mentor and also close the query with the solution<br >
 
-# Example
+# Note
 Admin: (To get into admin route, you have to just remove other login route names and add <b>/admin/login</b> at end of the url)<br >
 -Email: admin@gmail.com <br >
 -password: 12345 <br >
