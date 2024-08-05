@@ -43,7 +43,7 @@ const Navbar = () => {
           className='flex items-center space-x-3 rtl:space-x-reverse'
         >
           <img src={ZenLogo} className='h-10' alt='Zen Logo' />
-          <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
+          <span className='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>
             Zen class
           </span>
         </NavLink>
@@ -79,7 +79,7 @@ const Navbar = () => {
                   key={item.route}
                   to={item.route}
                   className={`block py-2 px-3 rounded md:text-white ${
-                    item?.route == pathname ? 'bg-indigo-700 p-2' : ''
+                    item?.route == pathname && 'bg-indigo-600 p-2'
                   }`}
                 >
                   {item.name}
