@@ -1,26 +1,28 @@
-# Ticketing System Frontend
+# 🚀Ticketing System Frontend
 
-Ticketing System Frontend is MERN project with the realtime chatting functionality from socket.io.<br >
-Backend repo - https://github.com/adhit7/ticketing-system-backend<br >
+Ticketing System API is a full-stack application built using the MERN stack, designed to manage user queries with role-based access for Admins, Learners, and Mentors. The platform features real-time chat functionality, enabling seamless communication and efficient resolution of queries.<br>
+Frontend Repo - https://github.com/adhit7/ticketing-system-backend
 
-# Userflow(Three role based functionalities)
-1.Admin:<br >
-  -Create a batch, learner and mentor.<br >
-  -Assigning mentor toward their batch queries from the learner<br >
-  -Can know what are all the conversation is happening and also can close the query with the solution<br >
+## 🌟 Key Features
 
-2.Learner:<br >
-  -Create a query.<br >
-  -Can chat with the their batch mentor once the query is assigned from admin and also close the query with the solution<br >
+### Admin:
+- Create batches, learners, and mentors.
+- Assign mentors to batch queries raised by learners.
+- Monitor ongoing conversations and close queries with solutions.
 
-3.Mentor:<br >
-  -Chat with the learner query that is assigned from admin towards the mentor and also close the query with the solution<br >
+### Learner:
+- Create and submit queries.
+- Chat with the assigned batch mentor and close queries upon resolution.
+
+### Mentor:
+- Engage in real-time chat with learners regarding their assigned queries.
+- Close queries after providing solutions.
+
 
 # Note
 Admin: (To get into admin route, you have to just remove other login route names and add <b>/admin/login</b> at end of the url)<br >
 -Email: admin@gmail.com <br >
 -password: 12345 <br >
-
 
 
 ## Local Setup
