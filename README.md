@@ -19,7 +19,6 @@ Backend Repo - https://github.com/adhit7/ticketing-system-backend
 - Engage in real-time chat with learners regarding their assigned queries.
 - Close queries after providing solutions.
 
-
 # Note
 Admin: (To get into admin route, you have to just remove other login route names and add <b>/admin/login</b> at end of the url)<br >
 -Email: admin@gmail.com <br >
