@@ -1,4 +1,4 @@
-## 🚀Ticketing System Frontend
+## 🚀 Ticketing System - <a href="https://zen-class-query.netlify.app/" target="_blank">Open Zen Class Query</a>
 
 Ticketing System API is a full-stack application built using the MERN stack, designed to manage user queries with role-based access for Admins, Learners, and Mentors. The platform features real-time chat functionality, enabling seamless communication and efficient resolution of queries.<br>
 Backend Repo - https://github.com/adhit7/ticketing-system-backend
